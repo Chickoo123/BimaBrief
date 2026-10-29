@@ -2,6 +2,8 @@
 
 **Indian health-insurance data, explained without guesswork.**
 
+**Live website:** https://chickoo123.github.io/BimaBrief/
+
 BimaBrief is an open-source public-data explorer for Indian health insurance. It helps people explore state-level insurance business, understand industry claim patterns, inspect insurer metrics, and trace calculations back to official IRDAI tables.
 
 ![BimaBrief website preview](assets/bimabrief-preview.png)
