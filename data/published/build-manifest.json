@@ -1,0 +1,14 @@
+{
+  "project": "BimaBrief",
+  "latest_reporting_year": "2024-25",
+  "built_on": "2026-10-29",
+  "source": "IRDAI Handbook on Indian Insurance Statistics",
+  "schema_validation": "PASSED",
+  "state_data_checks": "PASSED",
+  "files": [
+    "app_data.json",
+    "insurers.json",
+    "claim_journey.json",
+    "validation_report.json"
+  ]
+}

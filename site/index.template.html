@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BimaBrief — Indian Health Insurance Data, Clearly Explained</title>
+<meta name="description" content="BimaBrief is an independent Indian health insurance data explorer. Explore state-wise premiums and claims, insurer metrics, claim aging, and official IRDAI sources with transparent definitions.">
+<meta name="robots" content="index,follow">
+<meta name="author" content="Harshil Desai">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BimaBrief">
+<meta property="og:title" content="BimaBrief — Indian Health Insurance Data Explorer">
+<meta property="og:description" content="Explore public Indian health insurance statistics, compare clearly defined metrics, and trace results to official IRDAI sources.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="BimaBrief — Indian Health Insurance Data Explorer">
+<meta name="twitter:description" content="Explore official IRDAI health-insurance statistics, state trends, claim patterns and insurer metrics with clear formulas and limitations.">
+<meta name="theme-color" content="#102d2a">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BimaBrief","applicationCategory":"FinanceApplication","operatingSystem":"Web","description":"An independent public-data explorer for Indian health-insurance statistics using source-linked IRDAI data.","author":{"@type":"Person","name":"Harshil Desai"},"isAccessibleForFree":true}</script>
+<meta name="bimabrief-policy-api" content="/*__POLICY_API_BASE__*/">
+<style>/*__CSS__*/</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="#top" aria-label="BimaBrief home">
+    <span class="brand-mark">BB<span>↗</span></span>
+    <span class="brand-name">BIMABRIEF<br><small>PUBLIC INSURANCE DATA</small></span>
+  </a>
+  <nav class="main-nav" aria-label="Main navigation">
+    <a href="#explore">Explore</a>
+    <a href="#compare">Compare insurers</a>
+    <a href="#policy-fit">Policy fit AI</a>
+    <a href="#journey">Claim journey</a>
+    <a href="#irdai-updates">IRDAI updates</a>
+    <a href="#about">Sources & method</a>
+  </nav>
+  <div class="header-status"><span class="status-dot"></span><span>Independent · source-linked</span></div>
+</header>
+
+<main id="top">
+  <section class="hero-section" id="explore">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="eyebrow-line"></span> A CLEARER VIEW OF INSURANCE</div>
+      <h1>See the numbers.<br><em>Understand the story.</em></h1>
+      <p class="hero-intro">Explore Indian health insurance through official public data. Compare states, understand claims trends, and see exactly what each number can—and cannot—tell you.</p>
+      <div class="trust-row">
+        <span><i>✓</i> Source-linked metrics</span>
+        <span><i>✓</i> No “best insurer” score</span>
+        <span><i>✓</i> Missing data stays missing</span>
+      </div>
+      <a class="text-link" href="#compare">Explore insurer evidence <span aria-hidden="true">↘</span></a>
+    </div>
+
+    <div class="hero-data-card" aria-labelledby="snapshot-title">
+      <div class="card-kicker">
+        <div><span class="mini-eyebrow">YOUR STATE SNAPSHOT</span><h2 id="snapshot-title">Where does the premium go?</h2></div>
+        <span class="year-chip">IRDAI · FY <span id="card-year">2024–25</span></span>
+      </div>
+      <div class="control-grid">
+        <label for="place">State / Union Territory<select id="place" aria-label="State or Union Territory"></select></label>
+        <label for="year">Financial year<select id="year" aria-label="Financial year"></select></label>
+      </div>
+      <p class="hero-statement" id="hero">In <span id="h-place">All India</span>, the <span id="h-who">individual and family policy segment</span> reported <strong id="h-prem">…</strong> in premium; insurers paid <strong id="h-claims">…</strong> in claims.</p>
+      <div class="seg" role="group" aria-label="Type of health cover">
+        <button data-seg="individual" aria-pressed="true">Own policy</button>
+        <button data-seg="group" aria-pressed="false">Employer / group</button>
+        <button data-seg="government" aria-pressed="false">Government schemes</button>
+      </div>
+      <div class="ratio-result">
+        <div class="ratio-label">CLAIMS PAID PER ₹100 OF PREMIUM <span class="info-dot" title="A same-year comparison, not an individual claim approval rate." aria-label="A same-year comparison, not an individual claim approval rate.">i</span></div>
+        <div class="big" id="big">…</div>
+        <div id="jar" class="ratio-track" role="img" aria-label="Ratio scale"></div>
+        <div id="ratio-axis" class="ratio-axis" aria-hidden="true"></div>
+      </div>
+      <div id="seg-note"></div>
+      <div class="facts" id="facts"></div>
+      <div class="card-footnote"><span class="footnote-icon">↗</span> Same-year claims paid ÷ same-year premium. Not an approval chance, ICR, CSR or profit measure.</div>
+      <div class="snapshot-actions"><button class="share-button" type="button" id="share-snapshot">↗ Copy shareable view</button><span id="share-status" role="status" aria-live="polite">State, year and cover type will be included in the link.</span></div>
+    </div>
+  </section>
+
+  <section class="decoder-section" aria-labelledby="decoder-title" id="decoder">
+    <div class="decoder-intro">
+      <div class="section-topline"><span class="section-index">THE NUMBER DECODER</span><span class="section-chip">A little context changes everything</span></div>
+      <h2 id="decoder-title">A number can be true<br><em>and still mislead.</em></h2>
+      <p>Before you compare insurers, tap a card. These are the traps that turn a real statistic into the wrong conclusion.</p>
+    </div>
+    <div class="decoder-grid">
+      <details class="decoder-card decoder-card-dark">
+        <summary><span class="decoder-count">01 / PREMIUM & PAYOUT</span><strong>“₹70 paid per ₹100 premium means 70% of claims were approved.”</strong><span class="decoder-cta">Unpack this ↘</span></summary>
+        <div class="decoder-answer"><span class="answer-tag">NOT THE SAME THING</span><p>This compares <b>amounts</b> paid and premium reported in the same financial year. Claims paid may relate to policies from earlier years. It is not an approval rate.</p><a href="#explore">See your state snapshot ↗</a></div>
+      </details>
+      <details class="decoder-card">
+        <summary><span class="decoder-count">02 / INCURRED CLAIMS</span><strong>“A high health ICR proves an insurer serves customers better.”</strong><span class="decoder-cta">Unpack this ↘</span></summary>
+        <div class="decoder-answer"><span class="answer-tag">ONE SIGNAL, NOT A SCORE</span><p>ICR compares incurred claims with earned premium for the specified business. It does not measure service quality, solvency or your personal approval chance.</p><a href="#compare">Compare the separate signals ↗</a></div>
+      </details>
+      <details class="decoder-card">
+        <summary><span class="decoder-count">03 / COMPLAINTS</span><strong>“More complaints automatically means a worse insurer.”</strong><span class="decoder-cta">Unpack this ↘</span></summary>
+        <div class="decoder-answer"><span class="answer-tag">CHECK THE DENOMINATOR</span><p>Complaint totals depend on business size, product mix and reporting definitions. If complaint scope and policy denominator differ, the resulting rate is only a rough indicator—not an exact health-complaint rate.</p><a href="#compare">Inspect scope and limitations ↗</a></div>
+      </details>
+      <details class="decoder-card">
+        <summary><span class="decoder-count">04 / NETWORK PROVIDERS</span><strong>“More network providers means my hospital will be cashless.”</strong><span class="decoder-cta">Unpack this ↘</span></summary>
+        <div class="decoder-answer"><span class="answer-tag">CHECK YOUR ACTUAL POLICY</span><p>A reported network-provider count does not guarantee cashless access at a particular hospital under a particular plan. Provider lists and policy terms need a separate check.</p><a href="#compare">Read the network-data limitation ↗</a></div>
+      </details>
+    </div>
+    <div class="decoder-footer"><span class="decoder-spark" aria-hidden="true">✳</span><p><strong>BimaBrief principle:</strong> show the number, show the formula, show the limits. No mystery scores. No made-up certainty.</p></div>
+  </section>
+
+  <section class="section-card" aria-labelledby="cmp-h" id="state-comparison">
+    <div class="section-topline"><span class="section-index">01 / STATE PICTURE</span><span class="section-chip">State + year filters</span></div>
+    <div class="section-heading-row"><div><h2 id="cmp-h">How does your state compare?</h2><p class="lede" id="cmp-lede">Compare the same metric across states using the same reporting year.</p></div><div class="section-icon">↗</div></div>
+    <div class="axis"><span>₹0</span><span>₹50</span><span>₹100</span><span>₹150+</span></div>
+    <div class="strip" id="strip" aria-label="State comparison chart"></div>
+    <div id="cmp-note"></div>
+  </section>
+
+  <section class="section-card" aria-labelledby="trend-h">
+    <div class="section-topline"><span class="section-index">02 / THE LONG VIEW</span><span class="section-chip">Annual series</span></div>
+    <div class="section-heading-row"><div><h2 id="trend-h">The ten-year story</h2><p class="lede">Claims paid per ₹100 of premium, same year. Trends show what happened, not why.</p></div><div class="section-icon">⌁</div></div>
+    <div class="legend" id="trend-legend"></div>
+    <div class="chart-wrap"><svg class="chart" id="trend" viewBox="0 0 700 260" role="img" aria-label="Ten-year claims-paid-to-premium trend chart"></svg></div>
+    <p class="chart-caption"><span class="caption-mark"></span> A value above ₹100 means reported claims paid during that year exceeded reported premium in that same year. It does not mean the insurer lost money.</p>
+  </section>
+
+  <section class="section-card" aria-labelledby="cash-h">
+    <div class="section-topline"><span class="section-index">03 / HOW CLAIMS WERE PAID</span><span class="section-chip">Published from 2020–21</span></div>
+    <div class="section-heading-row"><div><h2 id="cash-h">Cashless is only part of the picture</h2><p class="lede" id="cash-lede"></p></div><div class="section-icon">◫</div></div>
+    <div class="bar" id="cash-bar" aria-hidden="true"></div>
+    <div class="legend cash-legend" id="cash-legend"></div>
+    <div id="cash-note"></div>
+  </section>
+
+  <section class="section-card compare-card" aria-labelledby="cmp2-h" id="compare">
+    <div class="section-topline"><span class="section-index">04 / INSURER EVIDENCE</span><span class="section-chip">No composite score</span></div>
+    <div class="section-heading-row"><div><h2 id="cmp2-h">Compare insurance company data</h2><p class="lede">Compare separate signals from IRDAI. Some metrics cover health insurance; others cover an insurer’s entire business. We show when that distinction prevents a fair comparison.</p></div><div class="section-icon">⇄</div></div>
+    <div class="comparison-principle"><span class="principle-icon">i</span><p><strong>No overall winner.</strong> ICR, solvency, complaints and claims status measure different things. A number is useful only when you understand its scope.</p></div>
+    <div class="pickers">
+      <label for="ins-a">Company A<select id="ins-a"></select></label>
+      <div class="versus">VS</div>
+      <label for="ins-b">Company B<select id="ins-b"></select></label>
+    </div>
+    <div id="ins-heads" class="ins-heads"></div>
+    <div id="ins-rows" class="ins-rows"></div>
+    <details class="gap">
+      <summary>What IRDAI does not publish for each company</summary>
+      <p>Public data does not provide every detail consumers want. This site cannot reliably show each company’s rejection reasons, company-specific cashless share, company-specific settlement speed, or combined state-and-insurer claims results. Missing data is not estimated.</p>
+    </details>
+  </section>
+
+  <section class="section-card policy-fit-card" aria-labelledby="policy-fit-title" id="policy-fit">
+    <div class="section-topline"><span class="section-index">05 / POLICY FIT STUDIO</span><span class="section-chip">Optional AI · Document-grounded</span></div>
+    <div class="section-heading-row"><div><h2 id="policy-fit-title">Compare the policy wording—not just the premium.</h2><p class="lede">Upload two or more health-insurance quote PDFs, add the full policy wording if you have it, then compare the terms against what matters to your family. Every finding should point back to a document page.</p></div><div class="section-icon">✳</div></div>
+    <div class="policy-fit-intro-grid">
+      <div class="policy-fit-promise"><span class="promise-icon">↳</span><div><strong>No made-up approval percentages.</strong><p>BimaBrief compares the evidence in the documents. It does not promise claim approval or declare an insurer universally reliable.</p></div></div>
+      <div class="policy-fit-promise"><span class="promise-icon">⌕</span><div><strong>Unknown is a valid answer.</strong><p>If a quote does not state exclusions, waiting periods or limits, the result must say so—not guess.</p></div></div>
+    </div>
+    <form id="policy-fit-form" class="policy-fit-form">
+      <div class="policy-fit-step"><span class="step-num">01</span><div><h3>Tell us what matters</h3><p>Choose broad preferences only. Do not enter diagnoses or personal identifiers.</p></div></div>
+      <div class="policy-needs-grid">
+        <label>Who needs cover?<select name="household" id="pf-household"><option value="individual">Just me</option><option value="couple">Me and my partner</option><option value="family_with_children">Family with children</option><option value="includes_parents">Including parents / seniors</option><option value="extended_family">Extended family</option></select></label>
+        <label>Target cover amount<select name="target_cover" id="pf-cover"><option value="not sure">Not sure yet</option><option value="5 lakh">₹5 lakh</option><option value="10 lakh">₹10 lakh</option><option value="15 lakh">₹15 lakh</option><option value="25 lakh">₹25 lakh</option><option value="50 lakh or more">₹50 lakh or more</option></select></label>
+        <label>Annual premium budget<select name="annual_budget" id="pf-budget"><option value="not sure">Not sure yet</option><option value="below 10000">Below ₹10,000</option><option value="10000-20000">₹10,000–₹20,000</option><option value="20000-35000">₹20,000–₹35,000</option><option value="35000 or more">₹35,000 or more</option><option value="flexible">Flexible, coverage comes first</option></select></label>
+        <label>State (optional)<input name="state" id="pf-state" type="text" maxlength="80" autocomplete="off" placeholder="e.g. Maharashtra"></label>
+      </div>
+      <fieldset class="policy-priorities"><legend>What matters most? Select all that apply.</legend>
+        <label><input type="checkbox" name="priority" value="room_rent_limits"> Room-rent limits</label>
+        <label><input type="checkbox" name="priority" value="low_copay"> Low or no co-payment</label>
+        <label><input type="checkbox" name="priority" value="pre_existing_waiting"> Pre-existing disease waiting period</label>
+        <label><input type="checkbox" name="priority" value="specific_disease_waiting"> Specific-disease waiting periods</label>
+        <label><input type="checkbox" name="priority" value="restoration"> Restoration / recharge benefit</label>
+        <label><input type="checkbox" name="priority" value="no_claim_bonus"> No-claim bonus</label>
+        <label><input type="checkbox" name="priority" value="consumables"> Consumables / non-medical expenses</label>
+        <label><input type="checkbox" name="priority" value="maternity"> Maternity benefits</label>
+        <label><input type="checkbox" name="priority" value="opd"> OPD cover</label>
+        <label><input type="checkbox" name="priority" value="hospital_network"> Hospital network</label>
+        <label><input type="checkbox" name="priority" value="fewer_sublimits"> Fewer sub-limits</label>
+        <label><input type="checkbox" name="priority" value="premium_affordability"> Affordable premium</label>
+      </fieldset>
+      <div class="policy-fit-step"><span class="step-num">02</span><div><h3>Upload policy documents</h3><p>Quote PDFs are required. Full policy wordings are strongly recommended because quotes often omit exclusions and detailed conditions.</p></div></div>
+      <div class="policy-offer-grid">
+        <fieldset class="policy-offer"><legend><span class="offer-chip">A</span> Offer A</legend><label>Quote PDF <span class="required">Required</span><input type="file" id="pf-quote-a" name="quote_a" accept="application/pdf,.pdf" required></label><label>Full policy wording PDF <span class="optional">Optional, recommended</span><input type="file" id="pf-wording-a" name="wording_a" accept="application/pdf,.pdf"></label></fieldset>
+        <fieldset class="policy-offer"><legend><span class="offer-chip offer-chip-alt">B</span> Offer B</legend><label>Quote PDF <span class="required">Required</span><input type="file" id="pf-quote-b" name="quote_b" accept="application/pdf,.pdf" required></label><label>Full policy wording PDF <span class="optional">Optional, recommended</span><input type="file" id="pf-wording-b" name="wording_b" accept="application/pdf,.pdf"></label></fieldset>
+        <details class="policy-offer policy-offer-extra"><summary><span class="offer-chip offer-chip-extra">C</span> Add a third offer (optional)</summary><label>Quote PDF<input type="file" id="pf-quote-c" name="quote_c" accept="application/pdf,.pdf"></label><label>Full policy wording PDF<input type="file" id="pf-wording-c" name="wording_c" accept="application/pdf,.pdf"></label></details>
+      </div>
+      <div class="policy-provider-row"><label>AI provider<select id="pf-provider" name="provider"><option value="gemini">Google Gemini API</option><option value="claude">Anthropic Claude API</option><option value="openai">OpenAI API</option></select></label><div class="provider-note"><strong>Secure-by-design:</strong> provider API keys stay on the backend server, not in this website's JavaScript. Provider API usage is billed separately from consumer chat subscriptions.</div></div>
+      <label class="policy-consent"><input id="pf-consent" type="checkbox" required><span>I understand that my selected AI provider will process the uploaded PDFs. I have removed names, phone numbers, addresses, policy IDs and health details where possible, and I have read the provider's applicable data-handling terms.</span></label>
+      <div class="policy-fit-actions"><button class="policy-run-button" id="pf-submit" type="submit" disabled>Check backend status… <span aria-hidden="true">↗</span></button><span class="policy-size-note">PDF only · up to 15 MB per file · no files are saved by the BimaBrief API backend.</span></div>
+      <p id="pf-status" class="policy-status" role="status" aria-live="polite">Checking whether the secure AI service is connected…</p>
+    </form>
+    <div id="pf-results" class="policy-results" hidden aria-live="polite"></div>
+    <div class="policy-fit-caveat"><strong>Read this before uploading.</strong> The PDFs are sent to the provider selected above; the provider's own handling rules apply. BimaBrief does not persist the uploads, but cannot promise the provider itself retains no request data. A quote alone is not the full contract. This tool compares the uploaded evidence, not an individual claim's approval chance or an insurer's overall reliability. Verify important terms with the insurer before buying.</div>
+  </section>
+
+  <section class="section-card journey-card" aria-labelledby="journey-title" id="journey">
+    <div class="section-topline"><span class="section-index">06 / CLAIM JOURNEY</span><span class="section-chip">IRDAI Table 66 · Industry-level</span></div>
+    <div class="section-heading-row"><div><h2 id="journey-title">Where did the claims workload go?</h2><p class="lede">Explore the yearly stock and movement of health insurance claims, then inspect how long paid, repudiated and outstanding claims sit in the reported duration buckets.</p></div><div class="section-icon">↘</div></div>
+    <div class="journey-controls">
+      <label for="claim-year">Financial year<select id="claim-year"></select></label>
+      <label for="claim-route">Claims handled<select id="claim-route"><option value="all">All claims</option><option value="tpa">Through TPAs</option><option value="direct">Directly by insurers</option></select></label>
+      <label for="claim-category">Claim category<select id="claim-category"></select></label>
+      <label for="claim-unit">Measure<select id="claim-unit"><option value="count">Number of claims</option><option value="amount_lakh">Amount (₹ crore)</option></select></label>
+    </div>
+    <div id="claim-summary" class="claim-summary" aria-live="polite"></div>
+    <div class="journey-subhead"><div><h3>Annual movement</h3><p>These are events recorded during the year, not one group of claims followed end-to-end.</p></div><span class="unit-pill" id="claim-unit-label">Claim count</span></div>
+    <div id="claim-flow" class="claim-flow"></div>
+    <div id="claim-discrepancy" class="claim-discrepancy" hidden></div>
+    <div class="journey-subhead aging-head"><div><h3>How long did claims take—or remain outstanding?</h3><p>Choose a type below. The source uses different start dates for different aging measures.</p></div></div>
+    <div class="aging-controls" role="group" aria-label="Claim aging type">
+      <button type="button" data-aging="paid" aria-pressed="true">Paid claims</button>
+      <button type="button" data-aging="repudiated" aria-pressed="false">Repudiated claims</button>
+      <button type="button" data-aging="outstanding" aria-pressed="false">Outstanding claims</button>
+    </div>
+    <div id="claim-aging" class="claim-aging"></div>
+    <div id="claim-aging-note" class="note"></div>
+    <div class="journey-limitations" id="claim-limitations"></div>
+  </section>
+
+
+  <section class="section-card irdai-updates-card" aria-labelledby="irdai-updates-title" id="irdai-updates">
+    <div class="section-topline"><span class="section-index">07 / OFFICIAL RULES & UPDATES</span><span class="section-chip">Sources checked 29 Oct 2026</span></div>
+    <div class="section-heading-row"><div><h2 id="irdai-updates-title">Rules change. <em>Check the original.</em></h2><p class="lede">A dated, plain-language guide to important health-insurance provisions, plus direct links to IRDAI's official pages. This is not a substitute for the current circular or your policy wording.</p></div><div class="section-icon">↗</div></div>
+
+    <div class="irdai-latest-handbook">
+      <div class="latest-badge">LATEST HANDBOOK LISTING OBSERVED</div>
+      <div class="latest-handbook-copy"><h3>Handbook on Indian Insurance Statistics · FY 2024–25</h3><p>At our review on 29 October 2026, IRDAI's Handbook listing showed the 2024–25 edition, with the listing marked updated 3 February 2026. Check the official page for any newer release.</p></div>
+      <a class="official-link-button" href="https://irdai.gov.in/handbook-of-indian-insurance" target="_blank" rel="noopener noreferrer">Open official Handbook ↗</a>
+    </div>
+
+    <div class="rule-cards-grid">
+      <article class="rule-card"><span class="rule-card-kicker">DATED REFERENCE · 29 MAY 2024</span><h3>Cashless authorisation timelines</h3><p>The Health Insurance Master Circular states a one-hour window for deciding cashless pre-authorisation requests and a three-hour window for final discharge authorisation.</p><a href="https://irdai.gov.in/circulars" target="_blank" rel="noopener noreferrer">Check current IRDAI circulars ↗</a></article>
+      <article class="rule-card"><span class="rule-card-kicker">WAITING PERIODS</span><h3>Pre-existing disease waiting period</h3><p>The 2024 health-insurance circular sets a maximum waiting period of 36 months for pre-existing diseases. The waiting period for a specific plan may be shorter; check its policy wording and any later amendment.</p><a href="https://irdai.gov.in/health-insurance-products" target="_blank" rel="noopener noreferrer">Find official health product documents ↗</a></article>
+      <article class="rule-card"><span class="rule-card-kicker">CONTINUOUS COVER</span><h3>Moratorium is not a claim guarantee</h3><p>After 60 continuous months, contesting a policy or claim on non-disclosure or misrepresentation grounds is restricted, except in cases of established fraud. Policy exclusions, limits, co-payments and other applicable terms do not simply disappear; enhanced cover may be treated separately.</p><a href="https://irdai.gov.in/circulars" target="_blank" rel="noopener noreferrer">Verify the applicable circular ↗</a></article>
+      <article class="rule-card"><span class="rule-card-kicker">RENEWAL</span><h3>A previous claim is not, by itself, the whole answer</h3><p>The 2024 circular includes a protection against denying renewal solely because claims were made in previous policy years. Always verify the complete applicable rule, permitted exceptions and the policy's actual terms.</p><a href="https://irdai.gov.in/circulars" target="_blank" rel="noopener noreferrer">Review official notices and circulars ↗</a></article>
+      <article class="rule-card"><span class="rule-card-kicker">ENTRY AGE</span><h3>No blanket upper-age bar</h3><p>The 2024 health-insurance circular provides for health products across age groups, without a blanket upper age limit for entry. This does not mean every product has identical benefits or that every proposal is automatically accepted; verify the specific product and current rules.</p><a href="https://irdai.gov.in/health-insurance-products" target="_blank" rel="noopener noreferrer">Check current product wording ↗</a></article>
+    </div>
+
+    <div class="irdai-resource-row" aria-label="Official IRDAI resources">
+      <a href="https://irdai.gov.in/circulars" target="_blank" rel="noopener noreferrer"><span>01</span><strong>Circulars & regulatory updates</strong><small>Check for later amendments</small><b>↗</b></a>
+      <a href="https://irdai.gov.in/health-insurance-products" target="_blank" rel="noopener noreferrer"><span>02</span><strong>Health insurance products</strong><small>Search policy terms and UINs</small><b>↗</b></a>
+      <a href="https://irdai.gov.in/annual-reports" target="_blank" rel="noopener noreferrer"><span>03</span><strong>IRDAI annual reports</strong><small>Sector performance and grievances</small><b>↗</b></a>
+      <a href="https://bimabharosa.irdai.gov.in/" target="_blank" rel="noopener noreferrer"><span>04</span><strong>Bima Bharosa</strong><small>Register or track a grievance</small><b>↗</b></a>
+    </div>
+
+    <div class="irdai-connection-note"><div class="connection-icon">i</div><div><strong>Can BimaBrief sync directly with IRDAI?</strong><p>BimaBrief links to official IRDAI pages and runs a monthly check for a newer statistical Handbook, opening a review issue when it detects one. We have not verified a stable public IRDAI API or RSS feed for all circular amendments, so regulations are <b>not auto-synced</b> into this page. This card summarises a dated circular; open the official source to check whether it has been amended. IRDAI—not BimaBrief—is the authoritative source.</p></div></div>
+  </section>
+
+  <section class="section-card methodology-card" aria-labelledby="about-h" id="about">
+    <div class="section-topline"><span class="section-index">08 / SOURCES & METHOD</span><span class="section-chip">Open and inspectable</span></div>
+    <div class="section-heading-row"><div><h2 id="about-h">About the data</h2><p class="lede">Every result should answer three things: where it came from, how it was calculated, and what it cannot prove.</p></div><div class="section-icon">⌕</div></div>
+    <details><summary>Why I built BimaBrief</summary><p>I started BimaBrief because official insurance statistics can be difficult to explore and easy to misread. I wanted a practical public tool that links each result to its source, explains the calculation and says clearly when the available data cannot answer a question. The aim is to make the evidence easier to understand—not to attack or endorse any company.</p><p><strong>— Harshil Desai, Project Lead</strong></p></details>
+    <details open><summary>Where the numbers come from</summary><p>Figures come from the <a href="https://irdai.gov.in/handbook-of-indian-insurance" rel="noopener">IRDAI Handbook on Indian Insurance Statistics 2024–25</a>, including Table 67 (state-wise health insurance business), Table 72 (state-wise claim settlement), Tables 53, 56 and 58 (insurer claims, grievances and policies), Table 62 (health incurred claims ratio), Table 49 (solvency), Table 80 (network providers) and Table 66 (industry claims development and aging). Health business in these tables excludes personal accident and travel unless noted otherwise. The Handbook is published annually.</p></details>
+    <details><summary>What “claims paid per ₹100 of premium” means</summary><p>It compares the amount of claims paid in a financial year with the premium reported in the same year. Some claims paid may relate to policies bought earlier. It is not the official Incurred Claims Ratio, not the Claim Settlement Ratio, not a measure of profit and not the probability that an individual claim will be paid.</p><p>Trends show what happened, not why. The data alone does not establish the cause of a change.</p></details>
+    <details><summary>Own policy, employer or group, and government schemes</summary><p><strong>Own policy</strong> means an individual or family policy. <strong>Employer or group</strong> means cover provided through a group, such as employees. <strong>Government schemes</strong> are government-backed programmes. These categories have different funding and coverage structures and should not be treated as interchangeable.</p></details>
+    <details><summary>What “Not available” means</summary><p>“Not available” means the source did not provide a usable value or a fair calculation cannot be made. It does not mean zero. Source-reported zeroes and missing values are preserved separately.</p></details>
+    <details><summary>Why some comparisons are limited or blocked</summary><p>Metrics are compared only when their definitions, time period, units, denominators and insurance scope are compatible. A whole-company metric is not automatically health-only. The network-provider table is a 2024–25 snapshot, not a ten-year series.</p></details>
+    <details><summary>How data discrepancies are handled</summary><p>Automated checks validate headers, units, totals and key relationships. If IRDAI’s own table does not reconcile under a documented check, the values are preserved and the discrepancy is flagged rather than silently corrected. Every build runs tests; passing tests confirms only the checks defined, not that every possible error has been eliminated.</p></details>
+    <p class="disclaimer">BimaBrief is an independent educational project. It is not affiliated with, endorsed by, or acting on behalf of IRDAI or any insurer. Company names appear only to identify entities in cited source tables; no allegation of wrongdoing is made. This is not financial or legal advice and is not a recommendation to buy any company’s insurance. If you identify a source or calculation error, <a id="correction-link" href="#" rel="noopener">report it with a public source reference</a>.</p>
+  </section>
+
+  <footer class="site-footer">
+    <a class="brand footer-brand" href="#top"><span class="brand-mark">BB<span>↗</span></span><span class="brand-name">BIMABRIEF<br><small>PUBLIC INSURANCE DATA</small></span></a>
+    <div><p id="built"></p><p>Independent open-data project. Company names identify entities in cited source tables; this project does not allege wrongdoing.</p></div>
+    <a id="gh" class="footer-link" href="#" rel="noopener">View project source ↗</a>
+  </footer>
+</main>
+<script id="app-data" type="application/json">/*__DATA__*/</script>
+<script id="insurer-data" type="application/json">/*__INSURERS__*/</script>
+<script id="claim-data" type="application/json">/*__CLAIMS__*/</script>
+<script>/*__JS__*/</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+# Python/test caches and virtual environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Temporary builds and intermediate/generated local data
+build/
+data/raw/table67.csv
+data/raw/handbook/*.xlsx
+data/processed/*.json
+docs/
+
+# User uploads and source files that must never enter public Git history
+*.pdf
+*.doc
+*.docx
+*.xls
+*.xlsx
+private/
+uploads/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Secrets / local environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key

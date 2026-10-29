@@ -1,0 +1,9 @@
+/* Insurer comparison specific states. The main design system lives in 10-base.css. */
+.flag.high { background: var(--bad-bg); color: var(--bad-ink); }
+.flag.watch { background: var(--warn-bg); color: var(--warn-ink); }
+.flag.info { background: #edf0eb; color: #56655f; }
+.verdict.ok { background: #eef5ec; color: #31594e; }
+.verdict.no { background: var(--warn-bg); color: var(--warn-ink); }
+.verdict.limited { background: #fff3df; color: #77521e; }
+.blocked-values .value-card { background: #f8f8f3; border-style: dashed; }
+.spark { color: var(--paid); }

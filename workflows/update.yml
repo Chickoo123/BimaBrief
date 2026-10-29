@@ -1,0 +1,92 @@
+name: Validate and deploy BimaBrief
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: "30 3 1 * *" # Monthly source check; the Handbook is published annually.
+
+concurrency:
+  group: bimabrief-pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  issues: write
+  pages: write
+
+jobs:
+  build-and-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source and reviewed data snapshot
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install pinned dependencies
+        run: python -m pip install -r requirements.txt -r requirements-policy-api.txt
+
+      - name: Install Chromium for the real browser smoke test
+        run: python -m playwright install --with-deps chromium
+
+      - name: Validate the reviewed snapshot and build the site
+        env:
+          REPO_URL: https://github.com/${{ github.repository }}
+          BIMABRIEF_POLICY_API_BASE: ${{ vars.BIMABRIEF_POLICY_API_BASE }}
+        run: python scripts/build_release.py --output-dir build/site --repo-url "$REPO_URL" --policy-api-base "$BIMABRIEF_POLICY_API_BASE"
+
+      - name: Run tests against the freshly generated site
+        env:
+          BIMABRIEF_SITE_DIR: build/site
+          CI: "true"
+        run: python -m pytest -q
+
+      - name: Check for a newer IRDAI Handbook
+        id: irdai
+        run: python scripts/check_new_handbook.py --data build/site/data/app_data.json | tee check.txt
+
+      - name: Open an issue for a new Handbook or failed source check
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if grep -q "NEW=" check.txt; then
+            Y=$(grep -o "NEW=.*" check.txt | cut -d= -f2)
+            gh issue list --search "New IRDAI Handbook $Y" --state open --json title -q '.[].title' | grep -q . || \
+              gh issue create --title "New IRDAI Handbook $Y is available" \
+                --body "Review the official IRDAI Handbook listing at https://irdai.gov.in/handbook-of-indian-insurance. Download the source workbooks locally, inspect table definitions and source discrepancies, run the full pipeline, and promote only reviewed JSON snapshots using scripts/promote_snapshot.py. Do not commit raw workbooks; their redistribution terms have not been verified. This workflow does not silently ingest a new edition."
+          elif grep -q "CHECK_FAILED=" check.txt; then
+            gh issue list --search "Manual IRDAI Handbook update check needed" --state open --json title -q '.[].title' | grep -q . || \
+              gh issue create --title "Manual IRDAI Handbook update check needed" \
+                --body "The scheduled source check could not verify the current IRDAI Handbook listing. This does not mean the snapshot is stale; it means automatic verification failed. Manually review https://irdai.gov.in/handbook-of-indian-insurance, note the current edition, and resolve this issue after checking."
+          fi
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact (no generated data commits)
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: build/site
+
+  deploy:
+    needs: build-and-check
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      contents: read
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy validated site
+        id: deployment
+        uses: actions/deploy-pages@v4

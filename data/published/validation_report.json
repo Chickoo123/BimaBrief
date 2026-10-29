@@ -1,0 +1,77 @@
+{
+  "status": "PASSED",
+  "checks": [
+    {
+      "check": "required_columns_present",
+      "passed": true,
+      "hard": true,
+      "detail": "missing: []"
+    },
+    {
+      "check": "no_empty_file",
+      "passed": true,
+      "hard": true,
+      "detail": "rows: 10175"
+    },
+    {
+      "check": "missing_values_kept_missing",
+      "passed": true,
+      "hard": false,
+      "detail": "blank values kept as missing: 734"
+    },
+    {
+      "check": "all_values_numeric",
+      "passed": true,
+      "hard": true,
+      "detail": "non-numeric text values: 0"
+    },
+    {
+      "check": "negative_values_flagged",
+      "passed": true,
+      "hard": false,
+      "detail": "42 negative values kept as published (adjustments); categories: ['Government Scheme - AB-PMJAY', 'Government Scheme - Other', 'Government Scheme - RSBY', 'Government Schemes - Combined', 'Group Business (Employer & Other)']"
+    },
+    {
+      "check": "all_metrics_recognised",
+      "passed": true,
+      "hard": false,
+      "detail": "unknown sub_categories: []"
+    },
+    {
+      "check": "units_consistent",
+      "passed": true,
+      "hard": true,
+      "detail": "rows with unexpected unit: 0; e.g. []"
+    },
+    {
+      "check": "no_duplicate_rows",
+      "passed": true,
+      "hard": true,
+      "detail": "duplicate keys: 0"
+    },
+    {
+      "check": "category_mapping",
+      "passed": true,
+      "hard": false,
+      "detail": "[{'category': 'Government Schemes - Combined', 'group': 'government_scheme'}, {'category': 'Government Scheme - RSBY', 'group': 'government_scheme'}, {'category': 'Government Scheme - Other', 'group': 'government_scheme'}, {'category': 'Government Scheme - AB-PMJAY', 'group': 'government_scheme'}, {'category': 'Group Business (Employer & Other)', 'group': 'group'}, {'category': 'Individual Business', 'group': 'individual'}, {'category': 'Grand Total', 'group': 'total_row'}]"
+    },
+    {
+      "check": "coverage",
+      "passed": true,
+      "hard": false,
+      "detail": "10 years (2015-16 to 2024-25), 37 states/UTs"
+    },
+    {
+      "check": "states_match_national_total",
+      "passed": true,
+      "hard": false,
+      "detail": "0 of 275 totals differ by >1%: []"
+    },
+    {
+      "check": "extreme_ratios_flagged",
+      "passed": true,
+      "hard": false,
+      "detail": "28 rows above 300% need review: [{'fiscal_year': '2015-16', 'state_name': 'Haryana', 'category': 'Government Schemes - Combined', 'claims_to_premium_pct': 1653.42}, {'fiscal_year': '2015-16', 'state_name': 'West Bengal', 'category': 'Government Schemes - Combined', 'claims_to_premium_pct': 338.03}, {'fiscal_year': '2016-17', 'state_name': 'Chhattisgarh', 'category': 'Government Schemes - Combined', 'claims_to_premium_pct': 317.09}, {'fiscal_year': '2016-17', 'state_name': 'Dadra & Nagar Haveli and Daman & Diu', 'category': 'Government Schemes - Combined', 'claims_to_premium_pct': 330.22}, {'fiscal_year': '2016-17', 'state_name': 'Haryana', 'category': 'Government Schemes - Combined', 'claims_to_premium_pct': 647953276.9}]"
+    }
+  ]
+}

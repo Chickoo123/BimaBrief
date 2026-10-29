@@ -1,0 +1,38 @@
+/* Neutral official-source hub: explain the rule, date it, then send users to IRDAI. */
+.irdai-updates-card { overflow: hidden; }
+.irdai-updates-card .section-heading-row h2 em { color: var(--paid); font-weight: 500; }
+.irdai-latest-handbook { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 12px 22px; align-items: center; padding: clamp(18px,3vw,28px); border-radius: 18px; background: var(--ink); color: #fff; margin: 20px 0 23px; }
+.latest-badge { grid-column: 1/-1; width: fit-content; padding: 6px 9px; border-radius: 999px; background: rgba(217,251,118,.14); color: var(--accent); font: 600 9px var(--mono); letter-spacing: .08em; }
+.latest-handbook-copy h3 { margin: 0 0 8px; font-size: clamp(17px,2.2vw,24px); line-height: 1.3; }
+.latest-handbook-copy p { margin: 0; max-width: 75ch; color: #cbd9d2; font-size: 12px; line-height: 1.7; }
+.official-link-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 15px; border-radius: 999px; background: var(--accent); color: var(--ink); font-size: 12px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.official-link-button:hover { color: var(--ink); filter: brightness(.97); }
+.rule-cards-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 13px; margin: 20px 0 24px; }
+.rule-card { min-width: 0; border: 1px solid var(--line); border-radius: 15px; padding: 19px; background: var(--surface); }
+.rule-card-kicker { display: block; margin-bottom: 11px; color: var(--paid); font: 600 9px var(--mono); letter-spacing: .08em; }
+.rule-card h3 { margin: 0 0 8px; font-size: 16px; line-height: 1.35; }
+.rule-card p { margin: 0 0 14px; color: var(--muted); font-size: 12px; line-height: 1.75; }
+.rule-card a { font-size: 11px; font-weight: 700; text-decoration: none; }
+.rule-card a:hover, .irdai-resource-row a:hover strong { text-decoration: underline; }
+.irdai-resource-row { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; margin-bottom: 18px; }
+.irdai-resource-row a { display: grid; grid-template-columns: 30px minmax(0,1fr) 20px; gap: 3px 11px; align-items: center; padding: 15px; text-decoration: none; color: var(--ink); background: var(--surface); border-bottom: 1px solid var(--line); min-width: 0; }
+.irdai-resource-row a:nth-child(odd) { border-right: 1px solid var(--line); }
+.irdai-resource-row a:nth-last-child(-n+2) { border-bottom: 0; }
+.irdai-resource-row a > span { grid-row: span 2; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 9px; background: var(--paid-light); color: var(--paid); font: 500 10px var(--mono); }
+.irdai-resource-row strong { font-size: 12px; line-height: 1.4; }
+.irdai-resource-row small { grid-column: 2; color: var(--muted); font-size: 10px; line-height: 1.45; }
+.irdai-resource-row b { grid-column: 3; grid-row: 1 / span 2; color: var(--paid); }
+.irdai-connection-note { display: grid; grid-template-columns: 29px minmax(0,1fr); gap: 12px; padding: 15px 17px; border-radius: 13px; background: #edf2e8; }
+.connection-icon { display: grid; place-items: center; width: 27px; height: 27px; border-radius: 50%; background: var(--ink); color: var(--accent); font: 700 12px var(--mono); }
+.irdai-connection-note strong { display: block; margin: 2px 0 5px; font-size: 12px; }
+.irdai-connection-note p { margin: 0; color: #53645b; font-size: 11px; line-height: 1.75; }
+.irdai-connection-note b { color: var(--ink); }
+@media (max-width:700px) {
+  .irdai-latest-handbook { grid-template-columns: minmax(0,1fr); }
+  .latest-badge { grid-column: 1; }
+  .official-link-button { width: fit-content; white-space: normal; }
+  .rule-cards-grid { grid-template-columns: minmax(0,1fr); }
+  .irdai-resource-row { grid-template-columns: minmax(0,1fr); }
+  .irdai-resource-row a { border-right: 0 !important; border-bottom: 1px solid var(--line) !important; }
+  .irdai-resource-row a:last-child { border-bottom: 0 !important; }
+}
