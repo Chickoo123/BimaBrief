@@ -1,0 +1,146 @@
+name: Build, test and deploy BimaBrief
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "17 4 1 * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    env:
+      CI: "true"
+      BIMABRIEF_SITE_DIR: build/site
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install pinned dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Install Chromium for browser tests
+        run: python -m playwright install --with-deps chromium
+
+      - name: Build the website from reviewed snapshots
+        run: >-
+          python scripts/build_release.py
+          --output-dir build/site
+          --repo-url "${{ github.server_url }}/${{ github.repository }}"
+          --policy-api-base "${{ vars.BIMABRIEF_POLICY_API_BASE }}"
+
+      - name: Run automated tests against the built website
+        run: python -m pytest -q tests
+        env:
+          BIMABRIEF_SITE_DIR: build/site
+          CI: "true"
+
+      - name: Check IRDAI Handbook listing (monthly schedule only)
+        id: handbook
+        if: github.event_name == 'schedule'
+        shell: bash
+        run: |
+          set +e
+          output="$(python scripts/check_new_handbook.py --data build/site/data/app_data.json 2>&1)"
+          status=$?
+          set -e
+          printf '%s\n' "$output"
+
+          if [ "$status" -ne 0 ] || printf '%s\n' "$output" | grep -qE '^(CHECK_FAILED=|NEW=)'; then
+            echo "needs_review=true" >> "$GITHUB_OUTPUT"
+            {
+              echo "details<<BIMABRIEF_EOF"
+              printf '%s\n' "$output"
+              echo "BIMABRIEF_EOF"
+            } >> "$GITHUB_OUTPUT"
+          else
+            echo "needs_review=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open a source-review issue when needed
+        if: github.event_name == 'schedule' && steps.handbook.outputs.needs_review == 'true'
+        uses: actions/github-script@v7
+        env:
+          CHECK_DETAILS: ${{ steps.handbook.outputs.details }}
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const title = "Review official IRDAI Handbook listing";
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner, repo, state: "open", per_page: 100
+            });
+            const existing = issues.find(item => item.title === title && !item.pull_request);
+            const body = [
+              "The scheduled source check found a newer Handbook edition or could not confidently verify the official listing.",
+              "",
+              "No source data has been imported automatically. Please review the official IRDAI page and validate the workbook before updating the published snapshot.",
+              "",
+              "Official source: https://irdai.gov.in/handbook-of-indian-insurance",
+              "",
+              "Check output:",
+              "```text",
+              process.env.CHECK_DETAILS || "No detailed output captured.",
+              "```"
+            ].join("\n");
+            if (existing) {
+              core.info(`An open review issue already exists: #${existing.number}. No duplicate created.`);
+            } else {
+              const created = await github.rest.issues.create({ owner, repo, title, body, labels: ["data-review"] }).catch(async error => {
+                core.warning(`Could not apply the optional data-review label: ${error.message}. Retrying without a label.`);
+                return await github.rest.issues.create({ owner, repo, title, body });
+              });
+              core.info(`Created source-review issue #${created.data.number}.`);
+            }
+
+      - name: Add sitemap and robots file
+        shell: bash
+        run: |
+          cat > build/site/robots.txt <<'EOF'
+          User-agent: *
+          Allow: /
+          EOF
+          site_url="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/"
+          printf '%s\n' '<?xml version="1.0" encoding="UTF-8"?>' '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' "  <url><loc>${site_url}</loc></url>" '</urlset>' > build/site/sitemap.xml
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/site
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4
