@@ -49,6 +49,9 @@ jobs:
           --repo-url "${{ github.server_url }}/${{ github.repository }}"
           --policy-api-base "${{ vars.BIMABRIEF_POLICY_API_BASE }}"
 
+      - name: Include Google Search Console verification file
+        run: cp google367a3f56179c24a7.html build/site/google367a3f56179c24a7.html
+
       - name: Run automated tests against the built website
         run: python -m pytest -q tests
         env:
