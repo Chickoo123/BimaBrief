@@ -104,7 +104,7 @@
       : '<span>₹0</span><span>₹50</span><span>₹100 benchmark</span>' ;
     $("big").innerHTML = r == null
       ? 'Not available<small>' + (d && d.has_negative_component ? 'One or more source components are negative accounting adjustments. The project does not calculate a ratio from this combination.' : 'The reported figures do not support a fair calculation for this selection.') + '</small>'
-      : '₹' + displayRatio(r) + ' per ₹100<small>Claims paid in ' + year + ' compared with premium reported in the same year. This is not an individual claim approval chance, ICR, CSR or profit measure.</small>' ;
+      : '₹' + displayRatio(r) + ' per ₹100<small>Claims paid in ' + IRC.esc(year) + ' compared with premium reported in the same year. This is not an individual claim approval chance, ICR, CSR or profit measure.</small>' ;
     var note = '';
     if (SEG === "government") note = '<p class="note">Government schemes have different funding and accounting structures. Some source values are negative adjustments, so this segment is shown for context and is not ranked across states.</p>' ;
     $("seg-note").innerHTML = note;
@@ -144,7 +144,7 @@
     var ai = ratio(get("All India", year, SEG));
     if (ai != null) noteEl.innerHTML += '<p class="note"><strong>All India reference:</strong> ₹' + displayRatio(ai) + ' per ₹100. A national figure is not the simple average of state ratios.</p>';
     var mine = pts.filter(function(x){return x.p === place;})[0];
-    if (place !== "All India" && !mine) noteEl.innerHTML += '<p class="note">' + IRC.esc(place) + " is not included in this comparison for " + year + " because it does not meet the display rule or its ratio is not available. Its reported figures remain available in the state selector.</p>";
+    if (place !== "All India" && !mine) noteEl.innerHTML += '<p class="note">' + IRC.esc(place) + " is not included in this comparison for " + IRC.esc(year) + " because it does not meet the display rule or its ratio is not available. Its reported figures remain available in the state selector.</p>";
     noteEl.innerHTML += '<details class="all-states"><summary>How to read this comparison</summary><p>Each bar uses the same horizontal scale for the selected year. These are same-year claims-paid-to-premium ratios, not claim approval rates or measures of insurer quality.</p></details>';
   }
 
@@ -159,17 +159,17 @@
     var out = "";
     for (var g = 0; g <= max; g += max > 200 ? 50 : 20) out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(g) + '" y2="' + y(g) + '" stroke="var(--line)"/><text x="' + (L - 8) + '" y="' + (y(g) + 4) + '" text-anchor="end">₹' + g + "</text>";
     out += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(100) + '" y2="' + y(100) + '" stroke="var(--ink)" stroke-dasharray="4 4" opacity=".5"/>';
-    years.forEach(function(yy, i){ if (i % 2 === 0 || i === years.length - 1) out += '<text x="' + x(i) + '" y="' + (H - 10) + '" text-anchor="middle">' + yy + "</text>"; });
+    years.forEach(function(yy, i){ if (i % 2 === 0 || i === years.length - 1) out += '<text x="' + x(i) + '" y="' + (H - 10) + '" text-anchor="middle">' + IRC.esc(yy) + "</text>"; });
     series.forEach(function(s){
       var path = "", pen = false;
       s.v.forEach(function(v, i){ if (v == null) { pen = false; return; } path += (pen ? "L" : "M") + x(i).toFixed(1) + " " + y(Math.min(v, max)).toFixed(1) + " "; pen = true; });
       out += '<path d="' + path + '" fill="none" stroke="' + s.c + '" stroke-width="' + s.w + '" stroke-linejoin="round"/>';
-      s.v.forEach(function(v, i){ if (v != null) out += '<circle cx="' + x(i) + '" cy="' + y(Math.min(v, max)) + '" r="3.5" fill="' + s.c + '"><title>' + s.name + " " + years[i] + ": ₹" + Math.round(v) + "</title></circle>"; });
+      s.v.forEach(function(v, i){ if (v != null) out += '<circle cx="' + x(i) + '" cy="' + y(Math.min(v, max)) + '" r="3.5" fill="' + s.c + '"><title>' + IRC.esc(s.name) + " " + IRC.esc(years[i]) + ": ₹" + Math.round(v) + "</title></circle>"; });
     });
     var ci = years.indexOf("2021-22");
     if (ci >= 0) out += '<text x="' + x(ci) + '" y="' + (T + 10) + '" text-anchor="middle">COVID-19 second wave year</text>';
     svg.innerHTML = out;
-    $("trend-legend").innerHTML = series.map(function(s){ return '<span style="--c:' + s.c + '">' + s.name + "</span>"; }).join("") + '<span style="--c:var(--ink)">₹100 line (claims equal premium)</span>';
+    $("trend-legend").innerHTML = series.map(function(s){ return '<span style="--c:' + s.c + '">' + IRC.esc(s.name) + "</span>"; }).join("") + '<span style="--c:var(--ink)">₹100 line (claims equal premium)</span>';
   }
 
   function renderCash(place){
@@ -183,7 +183,7 @@
     lede.textContent = "In " + yr + ", " + c.cashless_share_pct.toFixed(0) + " of every 100 paid claims in " + place + " were settled cashless, where the insurer pays the hospital directly. The rest were reimbursed after the patient paid, partly cashless and partly reimbursed, or paid as a fixed benefit (see the split below). This counts paid claims only, so it is not an approval rate, and it also depends on how many network hospitals are nearby." + (yr !== yearSel.value ? " (This split is only published from 2020-21.)" : "");
     parts.forEach(function(p){ if (p[1] > 0) { var d = document.createElement("div"); d.style.width = (p[1] / tot * 100) + "%"; d.style.background = p[2]; d.title = p[0] + ": " + INR.format(p[1]); bar.appendChild(d); } });
     $("cash-legend").innerHTML = parts.map(function(p){ return '<span style="--c:' + p[2] + '">' + p[0] + " " + (tot ? Math.round(p[1] / tot * 100) : 0) + "%</span>"; }).join("");
-    if (c.total_mismatch) noteEl.innerHTML = '<p class="note">In IRDAI’s table, the “Total” for ' + place + " in " + yr + " does not equal the sum of its parts (" + INR.format(c.total) + " vs " + INR.format(c.parts_total) + "). The split above uses the parts.</p>";
+    if (c.total_mismatch) noteEl.innerHTML = '<p class="note">In IRDAI’s table, the “Total” for ' + IRC.esc(place) + " in " + IRC.esc(yr) + " does not equal the sum of its parts (" + INR.format(c.total) + " vs " + INR.format(c.parts_total) + "). The split above uses the parts.</p>";
   }
 
   document.querySelectorAll(".seg button").forEach(function(b){
