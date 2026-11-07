@@ -17,7 +17,9 @@ concurrency:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest became Ubuntu 26 (Oct 2026), which Playwright 1.57's
+    # --with-deps installer does not support yet.
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       issues: write
