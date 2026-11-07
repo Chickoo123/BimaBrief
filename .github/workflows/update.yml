@@ -40,7 +40,16 @@ jobs:
           python -m pip install -r requirements.txt -r requirements-policy-api.txt
 
       - name: Install Chromium for browser tests
-        run: python -m playwright install --with-deps chromium
+        shell: bash
+        run: |
+          # apt mirrors on hosted runners occasionally fail; retry before giving up.
+          for attempt in 1 2 3; do
+            if python -m playwright install --with-deps chromium; then exit 0; fi
+            echo "Chromium install attempt $attempt failed; retrying in 20s..."
+            sudo apt-get update -y || true
+            sleep 20
+          done
+          exit 1
 
       - name: Build the website from reviewed snapshots
         run: >-
