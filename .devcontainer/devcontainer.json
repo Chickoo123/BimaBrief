@@ -1,0 +1,5 @@
+{
+  "name": "BimaBrief",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "postCreateCommand": "pip install -r requirements.txt -r requirements-policy-api.txt"
+}
